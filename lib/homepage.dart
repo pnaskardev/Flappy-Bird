@@ -1,6 +1,5 @@
 import 'package:flappy_bird/bird.dart';
 import 'package:flappy_bird/providers/data.dart';
-import 'package:flappy_bird/restart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +13,47 @@ class HomePage extends StatefulWidget
 
 class _HomePageState extends State<HomePage> 
 {
+
+
+
+  void showDialogue() 
+  {
+    showDialog
+    (
+      context: context, builder: (BuildContext context)
+      {
+        return AlertDialog
+        (
+          backgroundColor: Colors.brown,
+          title: Center
+          (
+            child: Text('G A M E   O V E R', style:Theme.of(context).textTheme.bodyLarge!.apply(color:Colors.white)),
+          ),
+          actions: 
+          [
+            GestureDetector
+            (
+              onTap:()=> Provider.of<Data>(context).resetGame(),
+              child: ClipRRect
+              (
+                borderRadius: BorderRadius.circular(5),
+                child: Center
+                (
+                  child: Container
+                  (
+                    padding: const EdgeInsets.all(7),
+                    color: Colors.white,
+                    child: Text('PLAY AGAIN',style:Theme.of(context).textTheme.bodyLarge!.apply(color:Colors.brown)),
+                  ),
+                ),
+              ),
+            )
+          ],
+        );
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) 
   {
@@ -21,60 +61,62 @@ class _HomePageState extends State<HomePage>
     (
       onTap: () 
       {
-        if(Provider.of<Data>(context,listen: false).gameStarted==true && Provider.of<Data>(context,listen: false).isDead==false)
+        if(Provider.of<Data>(context,listen: false).gameStarted==true && Provider.of<Data>(context,listen: false).birdDead()==false)
         {
           print('game already started');
           Provider.of<Data>(context,listen: false).jump();
         }  
-        else if(Provider.of<Data>(context,listen: false).gameStarted==false && Provider.of<Data>(context,listen: false).isDead==false)
+        else if(Provider.of<Data>(context,listen: false).gameStarted==false && Provider.of<Data>(context,listen: false).birdDead()==false)
         {
           print('game started just now');
           Provider.of<Data>(context,listen: false).startGame();
         }
-        // else 
-        else
+        else if(Provider.of<Data>(context,listen: false).birdDead()==true)
         {
-           void _showDialogue() 
+          print('bird is dead');
+         
+          showDialog
+          (
+            context: context, builder: (BuildContext context)
             {
-              showDialog
+              return AlertDialog
               (
-                context: context, builder: (BuildContext context)
-                {
-                  return AlertDialog
+                backgroundColor: Colors.brown,
+                title: Center
+                (
+                  child: Text('G A M E   O V E R', style:Theme.of(context).textTheme.bodyLarge!.apply(color:Colors.white)),
+                ),
+                actions: 
+                [
+                  GestureDetector
                   (
-                    backgroundColor: Colors.brown,
-                    title: Center
+                    onTap:(() 
+                    {
+                      Provider.of<Data>(context,listen: false).resetGame();
+                      Navigator.pop(context);  
+                    }),
+                    child: ClipRRect
                     (
-                      child: Text('G A M E   O V E R', style:Theme.of(context).textTheme.bodyLarge!.apply(color:Colors.white)),
-                    ),
-                    actions: 
-                    [
-                      GestureDetector
+                      borderRadius: BorderRadius.circular(5),
+                      child: Center
                       (
-                        onTap:()=> Provider.of<Data>(context).resetGame(),
-                        child: ClipRRect
+                        child: Container
                         (
-                          borderRadius: BorderRadius.circular(5),
-                          child: Center
-                          (
-                            child: Container
-                            (
-                              padding: const EdgeInsets.all(7),
-                              color: Colors.white,
-                              child: Text('PLAY AGAIN',style:Theme.of(context).textTheme.bodyLarge!.apply(color:Colors.brown)),
-                            ),
-                          ),
+                          padding: const EdgeInsets.all(7),
+                          color: Colors.white,
+                          child: Text('PLAY AGAIN',style:Theme.of(context).textTheme.bodyLarge!.apply(color:Colors.brown)),
                         ),
-                      )
-                    ],
-                  );
-                }
+                      ),
+                    ),
+                  )
+                ],
               );
             }
+          );
         }
-        Provider.of<Data>(context,listen: false).printnum;
       },
-      
+
+
       child: Scaffold
       (
         body: Column

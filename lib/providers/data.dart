@@ -71,17 +71,10 @@ class Data with ChangeNotifier
       _birdY=_intitalPos-_height;
       notifyListeners();
 
-      if(_isDead==true)
-      {
-        // print('bird is dead');
-      }
-
-
       if(birdDead()==true)
       {
         _isDead=true;
         notifyListeners();
-        
         timer.cancel();
         _gameStarted=false;
         notifyListeners();
