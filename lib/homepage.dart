@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flappy_bird/bird.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +23,56 @@ class _HomePageState extends State<HomePage>
 
   bool gameStarted=false;
 
+  void resetGame()
+  {
+    Navigator.pop(context);
+    setState(() 
+    {
+      birdY=0;
+      gameStarted=false;
+      time=0;
+      intitalPos=birdY;
+    });
+  }
+
+  void _showDialogue() 
+  {
+    showDialog
+    (
+      context: context, builder: (BuildContext context)
+      {
+        return AlertDialog
+        (
+          backgroundColor: Colors.brown,
+          title: Center
+          (
+            child: Text('G A M E   O V E R', style:Theme.of(context).textTheme.bodyLarge!.apply(color:Colors.white)),
+          ),
+          actions: 
+          [
+            GestureDetector
+            (
+              onTap: resetGame,
+              child: ClipRRect
+              (
+                borderRadius: BorderRadius.circular(5),
+                child: Center
+                (
+                  child: Container
+                  (
+                    padding: const EdgeInsets.all(7),
+                    color: Colors.white,
+                    child: Text('PLAY AGAIN',style:Theme.of(context).textTheme.bodyLarge!.apply(color:Colors.brown)),
+                  ),
+                ),
+              ),
+            )
+          ],
+        );
+      }
+    );
+  }
+
   void startGame()
   {
     gameStarted=true;
@@ -34,12 +83,13 @@ class _HomePageState extends State<HomePage>
       {
         birdY=intitalPos-height;
       });
-
-      print(birdY);
-      if(birdY < -1 || birdY>1)
+      if(birdDead()==true)
       {
         timer.cancel();
+        gameStarted=false;
+        _showDialogue();
       }
+      // print(birdY);
       time+=0.01;
     });
   }
@@ -49,6 +99,15 @@ class _HomePageState extends State<HomePage>
   {
     time=0;
     intitalPos=birdY;
+  }
+
+  bool birdDead()
+  {
+     if(birdY < -1 || birdY>1)
+    {
+      return true;
+    }
+    return false;
   }
 
 
@@ -84,17 +143,9 @@ class _HomePageState extends State<HomePage>
                         child:Text
                         (
                           gameStarted ? '' : 'T A P  T O  P L A Y',
-                          style: GoogleFonts.poppins
-                          (
-                            textStyle: const TextStyle
-                            (
-                              color: Colors.white,
-                              fontSize: 20,
-                            )
-                          ),
-
+                          style: Theme.of(context).textTheme.displaySmall!.apply(color: Colors.white),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -112,4 +163,6 @@ class _HomePageState extends State<HomePage>
       ),
     );
   }
+  
+ 
 }
