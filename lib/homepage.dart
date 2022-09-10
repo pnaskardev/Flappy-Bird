@@ -1,5 +1,6 @@
 import 'package:flappy_bird/bird.dart';
 import 'package:flappy_bird/providers/data.dart';
+import 'package:flappy_bird/restart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,25 +14,6 @@ class HomePage extends StatefulWidget
 
 class _HomePageState extends State<HomePage> 
 {
-
-  // ignore: non_constant_identifier_names
-  Function StartOrJump()
-  {
-    print(Provider.of<Data>(context,listen: false).birdY);
-
-
-    if(Provider.of<Data>(context,listen: false).gameStarted==true)
-    {
-      return Provider.of<Data>(context,listen: false).jump;
-    }
-    return Provider.of<Data>(context,listen: false).startGame;
-  }
-
-  // // ignore: non_constant_identifier_names
-  // void ResetGame()
-  // {
-  //   Provider.of<Data>(context,listen: false).resetGame;
-  // }
   @override
   Widget build(BuildContext context) 
   {
@@ -49,9 +31,46 @@ class _HomePageState extends State<HomePage>
           print('game started just now');
           Provider.of<Data>(context,listen: false).startGame();
         }
-        else if(Provider.of<Data>(context,listen: false).gameStarted==true && Provider.of<Data>(context,listen: false).isDead==true)
+        // else 
+        else
         {
-          
+           void _showDialogue() 
+            {
+              showDialog
+              (
+                context: context, builder: (BuildContext context)
+                {
+                  return AlertDialog
+                  (
+                    backgroundColor: Colors.brown,
+                    title: Center
+                    (
+                      child: Text('G A M E   O V E R', style:Theme.of(context).textTheme.bodyLarge!.apply(color:Colors.white)),
+                    ),
+                    actions: 
+                    [
+                      GestureDetector
+                      (
+                        onTap:()=> Provider.of<Data>(context).resetGame(),
+                        child: ClipRRect
+                        (
+                          borderRadius: BorderRadius.circular(5),
+                          child: Center
+                          (
+                            child: Container
+                            (
+                              padding: const EdgeInsets.all(7),
+                              color: Colors.white,
+                              child: Text('PLAY AGAIN',style:Theme.of(context).textTheme.bodyLarge!.apply(color:Colors.brown)),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                }
+              );
+            }
         }
         Provider.of<Data>(context,listen: false).printnum;
       },

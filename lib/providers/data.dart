@@ -11,12 +11,15 @@ class Data with ChangeNotifier
   final _gravity=-4.9;
   final _velocity=3.5;
   bool _gameStarted=false;
-  bool _isDead=false;
+  static bool _isDead=false;
   
   bool get isDead => _isDead;
 
-  // set isDead(bool value) => this._isDead = value;
-  
+  set isDead(bool value)
+  {
+    _isDead = value;
+    notifyListeners();
+  }
  get birdY => _birdY;
 
  set birdY(_)
@@ -61,18 +64,24 @@ class Data with ChangeNotifier
     notifyListeners();
     // gameStarted(true);
 
-    Timer.periodic(const Duration(milliseconds: 50),(timer)
+    Timer.periodic(const Duration(milliseconds: 10),(timer)
     {
       _height= _gravity*_time*_time+_velocity*_time;
       notifyListeners();
       _birdY=_intitalPos-_height;
       notifyListeners();
-      // height;
-      // birdY;
+
+      if(_isDead==true)
+      {
+        // print('bird is dead');
+      }
+
+
       if(birdDead()==true)
       {
         _isDead=true;
         notifyListeners();
+        
         timer.cancel();
         _gameStarted=false;
         notifyListeners();
@@ -104,6 +113,8 @@ class Data with ChangeNotifier
 
    void resetGame()
   {
+    _isDead=false;
+    notifyListeners();
     _birdY=0;
     notifyListeners();
     _gameStarted=false;
