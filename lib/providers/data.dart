@@ -11,15 +11,7 @@ class Data with ChangeNotifier
   final _gravity=-4.9;
   final _velocity=3.5;
   bool _gameStarted=false;
-  static bool _isDead=false;
-  
-  bool get isDead => _isDead;
 
-  set isDead(bool value)
-  {
-    _isDead = value;
-    notifyListeners();
-  }
  get birdY => _birdY;
 
  set birdY(_)
@@ -73,32 +65,21 @@ class Data with ChangeNotifier
 
       if(birdDead()==true)
       {
-        _isDead=true;
-        notifyListeners();
         timer.cancel();
         _gameStarted=false;
         notifyListeners();
+        return;
       }
       print(_birdY);
       _time+=0.01;
       notifyListeners();
     });
   }
-
-  void printnum()
-  {
-    if(_isDead==true)
-    {
-      print('bird is dead');
-    }
-  }
-
   void jump()
   {
     
     _time=0;
     notifyListeners();
-    // time(0);
     _intitalPos=_birdY;
     notifyListeners();
   }
@@ -106,8 +87,6 @@ class Data with ChangeNotifier
 
    void resetGame()
   {
-    _isDead=false;
-    notifyListeners();
     _birdY=0;
     notifyListeners();
     _gameStarted=false;
