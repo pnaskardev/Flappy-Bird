@@ -98,10 +98,7 @@ class _HomePageState extends State<HomePage>
                     children:
                     [
                       MyBird(),
-                      Cover
-                      (
-                        gamestart:Provider.of<Data>(context).gameStarted ? true : false
-                      ),
+                      Cover(gamestart: Provider.of<Data>(context).gameStarted ? true : false,)
                     ],
                   ),
                 ),
