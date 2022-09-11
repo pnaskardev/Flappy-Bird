@@ -12,6 +12,31 @@ class Data with ChangeNotifier
   final _velocity=3.5;
   bool _gameStarted=false;
 
+  static List<double> barX=[2,2+1.5];
+  static get getBarX => barX;
+
+//  set setBarX(static barX) => this.barX = barX;
+  static double barWidth=0.5;
+ static get getBarWidth => barWidth;
+
+//  set setBarWidth(static barWidth) => this.barWidth = barWidth;
+  static List<List<double>>barHeight=
+  [
+    [0.6,0.4],
+    [0.4,0.6],
+  ];
+
+  static get getbarHeight
+  {
+    return barHeight;
+  }
+
+  get getLen
+  {
+    return barX.length;
+  }
+
+
  get birdY => _birdY;
 
  set birdY(_)
@@ -56,7 +81,7 @@ class Data with ChangeNotifier
     notifyListeners();
     // gameStarted(true);
 
-    Timer.periodic(const Duration(milliseconds: 50),(timer)
+    Timer.periodic(const Duration(milliseconds: 10),(timer)
     {
       _height= _gravity*_time*_time+_velocity*_time;
       notifyListeners();
@@ -73,8 +98,28 @@ class Data with ChangeNotifier
       print(_birdY);
       _time+=0.01;
       notifyListeners();
+
+      moveMap();
+
     });
   }
+
+  void moveMap()
+  {
+    for (int i=0;i<barX.length;i++)
+    {
+      barX[i]-=0.05;
+      notifyListeners();
+
+
+      if(barX[i]< -1.5)
+      {
+        barX[i]+=3;
+        notifyListeners();
+      }
+    }
+  }
+
   void jump()
   {
     
@@ -99,7 +144,7 @@ class Data with ChangeNotifier
 
   bool birdDead()
   {
-     if(_birdY < -1 || _birdY>1)
+    if(_birdY < -1 || _birdY>1)
     {
       return true;
     }
