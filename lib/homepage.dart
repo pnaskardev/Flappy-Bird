@@ -95,10 +95,20 @@ class _HomePageState extends State<HomePage>
                   child: Stack
                   (
                     
-                    children: const 
+                    children:
                     [
-                      MyBird(),
-                      Cover(),
+                      const MyBird(),
+                      const Cover(),
+                      Container
+                      (
+                        alignment: const Alignment(0,0.5),
+                        child:Text
+                        (
+                          // gameStarted ? '' : 'T A P  T O  P L A Y',
+                          Provider.of<Data>(context).gameStarted ? '' : 'T A P  T O  P L A Y',
+                          style: Theme.of(context).textTheme.displaySmall!.apply(color: Colors.white),
+                        ),
+                      )
                     ],
                   ),
                 ),
