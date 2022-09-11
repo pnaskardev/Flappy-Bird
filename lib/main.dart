@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:provider/provider.dart';
+import 'providers/data.dart';
 import 'homepage.dart';
 
 void main() 
 {
-  runApp(const MyApp());
+  runApp
+  (
+    MultiProvider
+    (
+      providers:
+      [
+        ChangeNotifierProvider(create: (_)=>Data())
+      ],
+      child:const MyApp(),
+    ),
+    
+    // const MyApp()
+  );
 }
 
 class MyApp extends StatelessWidget 
@@ -15,6 +28,24 @@ class MyApp extends StatelessWidget
   @override
   Widget build(BuildContext context) 
   {
+    //   return MultiProvider(providers: 
+    //   [
+    //     ChangeNotifierProvider(create: (_)=>Data(context))
+    //   ],
+    //   child: MaterialApp
+    //   (
+    //     theme: ThemeData
+    //     (
+    //       textTheme: GoogleFonts.poppinsTextTheme
+    //       (
+    //         Theme.of(context).textTheme,
+          
+    //       ),
+    //     ),
+    //     debugShowCheckedModeBanner: false,
+    //     home: const HomePage(),
+    //   ),
+    // );
     return MaterialApp
     (
       theme: ThemeData
