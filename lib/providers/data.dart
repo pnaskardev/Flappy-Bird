@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flappy_bird/providers/birdData.dart';
 import 'package:flutter/material.dart';
 
 class Data with ChangeNotifier
@@ -31,7 +32,7 @@ class Data with ChangeNotifier
     return barHeight;
   }
 
-  get getLen
+  static get getLen
   {
     return barX.length;
   }
@@ -88,7 +89,7 @@ class Data with ChangeNotifier
       _birdY=_intitalPos-_height;
       notifyListeners();
 
-      if(birdDead()==true)
+      if(birdDead()==true ||colDead()==true)
       {
         timer.cancel();
         _gameStarted=false;
@@ -98,10 +99,22 @@ class Data with ChangeNotifier
       print(_birdY);
       _time+=0.01;
       notifyListeners();
-
       moveMap();
+      // Timer.periodic(const Duration(seconds: 50), (timer) 
+      // {
+      //   moveMap();
+      //   if(birdDead()==true || colDead()==true)
+      //   {
+      //     timer.cancel();
+      //   }
+      // });
+      
 
     });
+
+    
+
+
   }
 
   void moveMap()
@@ -140,6 +153,19 @@ class Data with ChangeNotifier
     notifyListeners();
     _intitalPos=_birdY;
     notifyListeners();
+
+    barX=[2,2+1.5];
+    notifyListeners();
+    barWidth=0.5;
+    notifyListeners();
+
+    barHeight=
+    [
+      [0.6,0.4],
+      [0.4,0.6],
+    ];
+    notifyListeners();
+
   }
 
   bool birdDead()
@@ -150,9 +176,22 @@ class Data with ChangeNotifier
     }
     return false;
   }
+  
 
+  double birdWidth=Bird.getBirdWidth;
+  double birdHeight=Bird.getBirdHeight;
+  // double birdY=Provider.of<Data>(context).birdY;
 
-
-
-
+  bool colDead()
+  {
+    for(int i=0;i<getLen;i++)
+    {
+      if(barX[i]<=birdWidth && barX[i]+barWidth>=birdWidth && (birdY<=-1+barHeight[i][0] || 
+      birdY+birdHeight>=1-barHeight[i][1]))
+      {
+        return true;
+      }
+    }
+    return false;
+  }
 }

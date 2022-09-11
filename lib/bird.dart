@@ -10,9 +10,10 @@ class MyBird extends StatelessWidget
   Widget build(BuildContext context) 
   {
 
-    final double birdWidth=Provider.of<Bird>(context,listen: false).getBirdWidth;
-    final double birdHeight=Provider.of<Bird>(context,listen: false).getBirdHeight;
-
+    // final double birdWidth=Provider.of<Bird>(context,listen: false).getBirdWidth;
+    // final double birdHeight=Provider.of<Bird>(context,listen: false).getBirdHeight;
+    final birdWidth=Bird.getBirdWidth;
+    final birdHeight=Bird.getBirdHeight;
 
     return Container
     (

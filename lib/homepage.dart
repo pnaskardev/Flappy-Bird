@@ -1,4 +1,5 @@
 import 'package:flappy_bird/CoverScreen/cover.dart';
+import 'package:flappy_bird/barrier.dart';
 import 'package:flappy_bird/bird.dart';
 import 'package:flappy_bird/providers/birdData.dart';
 import 'package:flappy_bird/providers/data.dart';
@@ -20,42 +21,43 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) 
   {
 
-    double birdWidth=Provider.of<Bird>(context).getBirdWidth;
-    double birdHeight=Provider.of<Bird>(context).getBirdHeight;
-    double birdY=Provider.of<Data>(context).birdY;
+    // double birdWidth=Bird.getBirdWidth;
+    // double birdHeight=Bird.getBirdHeight;
+    // double birdY=Provider.of<Data>(context).birdY;
 
-    int len=Provider.of<Data>(context).getLen;
+    // int len=Provider.of<Data>(context).getLen;
+    // int len=Data.getLen;
     List barX=Data.getBarX;
     double barWidth=Data.getBarWidth;
     List<List<double>> barHeight=Data.getbarHeight;
-    bool colDead()
-    {
-      for(int i=0;i<len;i++)
-      {
-        if(barX[i]<=birdWidth && barX[i]+barWidth>=birdWidth && (birdY<=-1+barHeight[i][0] || 
-        birdY+birdHeight>=1-barHeight[i][1]))
-        {
-          return true;
-        }
-      }
-      return false;
-    }
+    // bool colDead()
+    // {
+    //   for(int i=0;i<len;i++)
+    //   {
+    //     if(barX[i]<=birdWidth && barX[i]+barWidth>=birdWidth && (birdY<=-1+barHeight[i][0] || 
+    //     birdY+birdHeight>=1-barHeight[i][1]))
+    //     {
+    //       return true;
+    //     }
+    //   }
+    //   return false;
+    // }
 
     return GestureDetector
     (
       onTap: () 
       {
-        if(Provider.of<Data>(context,listen: false).gameStarted==true && Provider.of<Data>(context,listen: false).birdDead()==false && colDead()==false)
+        if(Provider.of<Data>(context,listen: false).gameStarted==true && Provider.of<Data>(context,listen: false).birdDead()==false && Provider.of<Data>(context,listen: false).colDead()==false)
         {
           print('game already started');
           Provider.of<Data>(context,listen: false).jump();
         }  
-        else if(Provider.of<Data>(context,listen: false).gameStarted==false && Provider.of<Data>(context,listen: false).birdDead()==false && colDead()==false)
+        else if(Provider.of<Data>(context,listen: false).gameStarted==false && Provider.of<Data>(context,listen: false).birdDead()==false && Provider.of<Data>(context,listen: false).colDead()==false)
         {
           print('game started just now');
           Provider.of<Data>(context,listen: false).startGame();
         }
-        if(Provider.of<Data>(context,listen: false).birdDead()==true || colDead()==true)
+        if(Provider.of<Data>(context,listen: false).birdDead()==true || Provider.of<Data>(context,listen: false).colDead()==true)
         {
           print('bird is dead');
           showDialog
@@ -121,7 +123,37 @@ class _HomePageState extends State<HomePage>
                     [
                       MyBird(),
                       Cover(gamestart: Provider.of<Data>(context).gameStarted ? true : false,),
+                      MyBarrier
+                      (
+                        barX:barX[0] ,
+                        barHeight: barHeight[0][0],
+                        barWidth: barWidth,
+                        isThisBottomBarrier: false
+                      ),
+
+                      MyBarrier
+                      (
+                        barX:barX[0] ,
+                        barHeight: barHeight[0][1],
+                        barWidth: barWidth,
+                        isThisBottomBarrier: true
+                      ),
                       
+                      MyBarrier
+                      (
+                        barX:barX[1] ,
+                        barHeight: barHeight[1][0],
+                        barWidth: barWidth,
+                        isThisBottomBarrier: false
+                      ),
+                      
+                      MyBarrier
+                      (
+                        barX:barX[1] ,
+                        barHeight: barHeight[1][1],
+                        barWidth: barWidth,
+                        isThisBottomBarrier: true
+                      )
                     ],
                   ),
                 ),
