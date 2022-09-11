@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/data.dart';
-class Cover extends StatefulWidget 
+class Cover extends StatelessWidget 
 {
-  const Cover({super.key});
 
-  @override
-  State<Cover> createState() => _CoverState();
-}
+  bool gamestart;
+  // bool get gamestart => _gamestart;
 
-class _CoverState extends State<Cover> 
-{
+  Cover({super.key,required this.gamestart});
+
+  late String s;
+
   @override
   Widget build(BuildContext context) 
   {
@@ -19,8 +19,7 @@ class _CoverState extends State<Cover>
       alignment: const Alignment(0,0.5),
       child:Text
       (
-        // gameStarted ? '' : 'T A P  T O  P L A Y',
-        Provider.of<Data>(context).gameStarted ? '' : 'T A P  T O  P L A Y',
+        gamestart? '' : 'T A P  T O  P L A Y',
         style: Theme.of(context).textTheme.displaySmall!.apply(color: Colors.white),
       ),
     );
