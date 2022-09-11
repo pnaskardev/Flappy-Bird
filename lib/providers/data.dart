@@ -56,7 +56,7 @@ class Data with ChangeNotifier
     notifyListeners();
     // gameStarted(true);
 
-    Timer.periodic(const Duration(milliseconds: 10),(timer)
+    Timer.periodic(const Duration(milliseconds: 50),(timer)
     {
       _height= _gravity*_time*_time+_velocity*_time;
       notifyListeners();

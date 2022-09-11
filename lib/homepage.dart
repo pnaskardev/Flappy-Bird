@@ -1,3 +1,5 @@
+import 'package:flappy_bird/CoverScreen/cover.dart';
+import 'package:flappy_bird/GameOverScreen/gameover.dart';
 import 'package:flappy_bird/bird.dart';
 import 'package:flappy_bird/providers/data.dart';
 import 'package:flutter/material.dart';
@@ -33,45 +35,45 @@ class _HomePageState extends State<HomePage>
         if(Provider.of<Data>(context,listen: false).birdDead()==true)
         {
           print('bird is dead');
-         
-          showDialog
-          (
-            context: context, builder: (BuildContext context)
-            {
-              return AlertDialog
-              (
-                backgroundColor: Colors.brown,
-                title: Center
-                (
-                  child: Text('G A M E   O V E R', style:Theme.of(context).textTheme.bodyLarge!.apply(color:Colors.white)),
-                ),
-                actions: 
-                [
-                  GestureDetector
-                  (
-                    onTap:(() 
-                    {
-                      Provider.of<Data>(context,listen: false).resetGame();
-                      Navigator.pop(context);  
-                    }),
-                    child: ClipRRect
-                    (
-                      borderRadius: BorderRadius.circular(5),
-                      child: Center
-                      (
-                        child: Container
-                        (
-                          padding: const EdgeInsets.all(7),
-                          color: Colors.white,
-                          child: Text('PLAY AGAIN',style:Theme.of(context).textTheme.bodyLarge!.apply(color:Colors.brown)),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              );
-            }
-          );
+          GameOver(context: context);
+          // showDialog
+          // (
+          //   context: context, builder: (BuildContext context)
+          //   {
+          //     return AlertDialog
+          //     (
+          //       backgroundColor: Colors.brown,
+          //       title: Center
+          //       (
+          //         child: Text('G A M E   O V E R', style:Theme.of(context).textTheme.bodyLarge!.apply(color:Colors.white)),
+          //       ),
+          //       actions: 
+          //       [
+          //         GestureDetector
+          //         (
+          //           onTap:(() 
+          //           {
+          //             Provider.of<Data>(context,listen: false).resetGame();
+          //             Navigator.pop(context);  
+          //           }),
+          //           child: ClipRRect
+          //           (
+          //             borderRadius: BorderRadius.circular(5),
+          //             child: Center
+          //             (
+          //               child: Container
+          //               (
+          //                 padding: const EdgeInsets.all(7),
+          //                 color: Colors.white,
+          //                 child: Text('PLAY AGAIN',style:Theme.of(context).textTheme.bodyLarge!.apply(color:Colors.brown)),
+          //               ),
+          //             ),
+          //           ),
+          //         )
+          //       ],
+          //     );
+          //   }
+          // );
         }
       },
 
@@ -93,19 +95,10 @@ class _HomePageState extends State<HomePage>
                   child: Stack
                   (
                     
-                    children: 
+                    children: const 
                     [
                       MyBird(),
-                      Container
-                      (
-                        alignment: const Alignment(0,0.5),
-                        child:Text
-                        (
-                          // gameStarted ? '' : 'T A P  T O  P L A Y',
-                          Provider.of<Data>(context).gameStarted ? '' : 'T A P  T O  P L A Y',
-                          style: Theme.of(context).textTheme.displaySmall!.apply(color: Colors.white),
-                        ),
-                      ),
+                      Cover(),
                     ],
                   ),
                 ),

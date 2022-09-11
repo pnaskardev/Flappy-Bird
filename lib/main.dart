@@ -1,3 +1,5 @@
+import 'package:flappy_bird/providers/barrierData.dart';
+import 'package:flappy_bird/providers/birdData.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +14,9 @@ void main()
     (
       providers:
       [
-        ChangeNotifierProvider(create: (_)=>Data())
+        ChangeNotifierProvider(create: (_)=>Data()),
+        ChangeNotifierProvider(create:(_)=> Barrier()),
+        ChangeNotifierProvider(create: (_)=>Bird())
       ],
       child:const MyApp(),
     ),
