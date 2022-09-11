@@ -1,4 +1,7 @@
+import 'package:flappy_bird/CoverScreen/cover.dart';
+import 'package:flappy_bird/barrier.dart';
 import 'package:flappy_bird/bird.dart';
+import 'package:flappy_bird/providers/birdData.dart';
 import 'package:flappy_bird/providers/data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,27 +16,50 @@ class HomePage extends StatefulWidget
 
 class _HomePageState extends State<HomePage> 
 {
+  
   @override
   Widget build(BuildContext context) 
   {
+
+    // double birdWidth=Bird.getBirdWidth;
+    // double birdHeight=Bird.getBirdHeight;
+    // double birdY=Provider.of<Data>(context).birdY;
+
+    // int len=Provider.of<Data>(context).getLen;
+    // int len=Data.getLen;
+    List barX=Data.getBarX;
+    double barWidth=Data.getBarWidth;
+    List<List<double>> barHeight=Data.getbarHeight;
+    // bool colDead()
+    // {
+    //   for(int i=0;i<len;i++)
+    //   {
+    //     if(barX[i]<=birdWidth && barX[i]+barWidth>=birdWidth && (birdY<=-1+barHeight[i][0] || 
+    //     birdY+birdHeight>=1-barHeight[i][1]))
+    //     {
+    //       return true;
+    //     }
+    //   }
+    //   return false;
+    // }
+
     return GestureDetector
     (
       onTap: () 
       {
-        if(Provider.of<Data>(context,listen: false).gameStarted==true && Provider.of<Data>(context,listen: false).birdDead()==false)
+        if(Provider.of<Data>(context,listen: false).gameStarted==true && Provider.of<Data>(context,listen: false).birdDead()==false && Provider.of<Data>(context,listen: false).colDead()==false)
         {
           print('game already started');
           Provider.of<Data>(context,listen: false).jump();
         }  
-        else if(Provider.of<Data>(context,listen: false).gameStarted==false && Provider.of<Data>(context,listen: false).birdDead()==false)
+        else if(Provider.of<Data>(context,listen: false).gameStarted==false && Provider.of<Data>(context,listen: false).birdDead()==false && Provider.of<Data>(context,listen: false).colDead()==false)
         {
           print('game started just now');
           Provider.of<Data>(context,listen: false).startGame();
         }
-        if(Provider.of<Data>(context,listen: false).birdDead()==true)
+        if(Provider.of<Data>(context,listen: false).birdDead()==true || Provider.of<Data>(context,listen: false).colDead()==true)
         {
           print('bird is dead');
-         
           showDialog
           (
             context: context, builder: (BuildContext context)
@@ -93,19 +119,41 @@ class _HomePageState extends State<HomePage>
                   child: Stack
                   (
                     
-                    children: 
+                    children:
                     [
                       MyBird(),
-                      Container
+                      Cover(gamestart: Provider.of<Data>(context).gameStarted ? true : false,),
+                      MyBarrier
                       (
-                        alignment: const Alignment(0,0.5),
-                        child:Text
-                        (
-                          // gameStarted ? '' : 'T A P  T O  P L A Y',
-                          Provider.of<Data>(context).gameStarted ? '' : 'T A P  T O  P L A Y',
-                          style: Theme.of(context).textTheme.displaySmall!.apply(color: Colors.white),
-                        ),
+                        barX:barX[0] ,
+                        barHeight: barHeight[0][0],
+                        barWidth: barWidth,
+                        isThisBottomBarrier: false
                       ),
+
+                      MyBarrier
+                      (
+                        barX:barX[0] ,
+                        barHeight: barHeight[0][1],
+                        barWidth: barWidth,
+                        isThisBottomBarrier: true
+                      ),
+                      
+                      MyBarrier
+                      (
+                        barX:barX[1] ,
+                        barHeight: barHeight[1][0],
+                        barWidth: barWidth,
+                        isThisBottomBarrier: false
+                      ),
+                      
+                      MyBarrier
+                      (
+                        barX:barX[1] ,
+                        barHeight: barHeight[1][1],
+                        barWidth: barWidth,
+                        isThisBottomBarrier: true
+                      )
                     ],
                   ),
                 ),

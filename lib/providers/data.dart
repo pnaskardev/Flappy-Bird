@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flappy_bird/providers/birdData.dart';
 import 'package:flutter/material.dart';
 
 class Data with ChangeNotifier
@@ -11,6 +12,31 @@ class Data with ChangeNotifier
   final _gravity=-4.9;
   final _velocity=3.5;
   bool _gameStarted=false;
+
+  static List<double> barX=[2,2+1.5];
+  static get getBarX => barX;
+
+//  set setBarX(static barX) => this.barX = barX;
+  static double barWidth=0.5;
+ static get getBarWidth => barWidth;
+
+//  set setBarWidth(static barWidth) => this.barWidth = barWidth;
+  static List<List<double>>barHeight=
+  [
+    [0.6,0.4],
+    [0.4,0.6],
+  ];
+
+  static get getbarHeight
+  {
+    return barHeight;
+  }
+
+  static get getLen
+  {
+    return barX.length;
+  }
+
 
  get birdY => _birdY;
 
@@ -63,7 +89,7 @@ class Data with ChangeNotifier
       _birdY=_intitalPos-_height;
       notifyListeners();
 
-      if(birdDead()==true)
+      if(birdDead()==true ||colDead()==true)
       {
         timer.cancel();
         _gameStarted=false;
@@ -73,8 +99,40 @@ class Data with ChangeNotifier
       print(_birdY);
       _time+=0.01;
       notifyListeners();
+      moveMap();
+      // Timer.periodic(const Duration(seconds: 50), (timer) 
+      // {
+      //   moveMap();
+      //   if(birdDead()==true || colDead()==true)
+      //   {
+      //     timer.cancel();
+      //   }
+      // });
+      
+
     });
+
+    
+
+
   }
+
+  void moveMap()
+  {
+    for (int i=0;i<barX.length;i++)
+    {
+      barX[i]-=0.05;
+      notifyListeners();
+
+
+      if(barX[i]< -1.5)
+      {
+        barX[i]+=3;
+        notifyListeners();
+      }
+    }
+  }
+
   void jump()
   {
     
@@ -95,19 +153,45 @@ class Data with ChangeNotifier
     notifyListeners();
     _intitalPos=_birdY;
     notifyListeners();
+
+    barX=[2,2+1.5];
+    notifyListeners();
+    barWidth=0.5;
+    notifyListeners();
+
+    barHeight=
+    [
+      [0.6,0.4],
+      [0.4,0.6],
+    ];
+    notifyListeners();
+
   }
 
   bool birdDead()
   {
-     if(_birdY < -1 || _birdY>1)
+    if(_birdY < -1 || _birdY>1)
     {
       return true;
     }
     return false;
   }
+  
 
+  double birdWidth=Bird.getBirdWidth;
+  double birdHeight=Bird.getBirdHeight;
+  // double birdY=Provider.of<Data>(context).birdY;
 
-
-
-
+  bool colDead()
+  {
+    for(int i=0;i<getLen;i++)
+    {
+      if(barX[i]<=birdWidth && barX[i]+barWidth>=birdWidth && (birdY<=-1+barHeight[i][0] || 
+      birdY+birdHeight>=1-barHeight[i][1]))
+      {
+        return true;
+      }
+    }
+    return false;
+  }
 }
